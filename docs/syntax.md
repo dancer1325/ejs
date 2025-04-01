@@ -1,67 +1,46 @@
 EJS Syntax Reference
 ====================
 
-EJS is designed to be flexible and easy-to-write, but without too much
-abstractions to cover up the HTML base.
-
-Table of contents
------------------
-
-- Basic format
-- Delimiters
-- Starting tags
-  - `<%=`: Escaped output
-  - `<%-`: Unescaped output
-  - `<%#`: Comments
-  - `<%`: Scriptlet
-  - `<%_`: Scriptlet, removes all preceding whitespace
-- Ending tags
-  - `%>`: Regular ending tag
-  - `-%>`: Removes trailing newline
-  - `_%>`: Removes all trailing whitespace
-- Literal tags
-- Including other files
-  - JavaScript `include()` function
-- Copyright
-
+* EJS' design
+  * flexible
+  * easy-to-write
+  * ❌NO too many abstractions | HTML base❌
 
 Basic format
 ------------
 
-An EJS “tag” is the primary functioning unit in an EJS template. With the
-exception of the literal tags, all tags are formed by the following format:
-
-<pre>&lt;<em>starting</em> <em>content</em> <em>closing</em>&gt;</pre>
-
-The spaces between *starting* and *content*, and *content* and *closing* are
-not required; they are recommended though for readability.
+* EJS “tag”
+  * 👀== MAIN functioning unit | EJS template 👀
+  * `<starting content closing>`
+    * 💡ALL tags' syntax💡
+      * ❌EXCEPT TO literal tags❌
+    * ` ` BETWEEN `<starting` `content` `closing>`
+      * recommended
+      * NOT required
 
 Delimiters
 ----------
 
-The *starting* and *closing* tags contain a special string called the
-delimiter. In this document, all tags are shown using the `%` delimiter, which
-is the default. You can, however, change that to your liking. See
-https://github.com/mde/ejs#custom-delimiters for more information on how to
-change it.
+* contained | `starting` & `closing` tags 
+* `%` delimiter
+  * default one 
+* if you want to customize it -> [here](../README.md#custom-delimiters)
 
 Starting tags
 -------------
 
 ### `<%=`: Escaped output
 
-The most important thing for a template language is the ability to pass
-variables to the template. In EJS, this is done with the `<%=` and `<%-` tags.
-
-`<%=` is the starting tag to use for variables that need to be escaped. If the
-specified string contains forbidden characters like `<` and `&`, they are
-escaped automatically with HTML codes.
-
-The content of the tag can be any valid JavaScript operators, so tags like
-`<%= name ? name : (lastName || 'John Doe') %>` would work as intended.
+* allows
+  * 👀escaping JS statements == evaluating JS statements 👀
+* `<%= content %>`
+  * ALLOWED `content` 
+    * ANY valid JavaScript operators
+      * _Example:_ `<%= name ? name : (lastName || 'John Doe') %>` 
+  * if `content` contains forbidden characters (_Example:_ `<`,  `&`) -> AUTOMATICALLY escaped -- with -- HTML codes
 
 #### Example
-
+* TODO: How to create the example?
 ##### EJS
 
 ```ejs
@@ -77,7 +56,7 @@ The content of the tag can be any valid JavaScript operators, so tags like
 }
 ```
 
-##### HTML
+##### OUTPUT HTML?
 
 ```html
 <p>Hello, Timoth&lt;y&gt;.</p>
@@ -86,14 +65,16 @@ The content of the tag can be any valid JavaScript operators, so tags like
 
 ### `<%-`: Unescaped output
 
-If your local contains preformatted HTML, you might not want to escape it. In
-this case, use the `<%-` tag.
-
-However, always **be 100% sure** the rendered local is sanitized, to prevent
-cross-site scripting (XSS) attacks.
+* allows
+  * NOT escaping
+* use cases
+  * 👀local -- contains -- preformatted HTML👀
+* recommendations
+  * check rendered local is sanitized
+    * Reason: 🧠prevent cross-site scripting (XSS) attacks🧠
 
 #### Example
-
+* TODO: How to create the example?
 ##### EJS
 
 ```ejs
@@ -113,7 +94,7 @@ cross-site scripting (XSS) attacks.
 }
 ```
 
-##### HTML
+##### OUTPUT HTML?
 
 ```html
 <p>Hello, <strong>Timothy</strong>.</p>
@@ -125,16 +106,14 @@ cross-site scripting (XSS) attacks.
 
 ### `<%#`: Comments
 
-The `<%#` starting tag denotes that the statement is a comment that is not to
-be executed or rendered in the resulting HTML.
-
-#### Whitespace
-
-The use of `<%#` might cause some useless whitespace, as illustrated by the
-example below. You can trim it using the `-%>` ending tag.
+* allows
+  * NOT executing or rendering | resulting HTML
+* recommendations
+  * use `-%>`
+    * Reason: 🧠might cause useless whitespace🧠
 
 #### Example
-
+* TODO: How to create the example?
 ##### EJS
 
 ```ejs
@@ -143,7 +122,7 @@ example below. You can trim it using the `-%>` ending tag.
 </div>
 
 <div>
-<%# comment -%>
+<%# comment -- removing -- useless whitespaces -%>
 </div>
 ```
 
@@ -160,30 +139,40 @@ example below. You can trim it using the `-%>` ending tag.
 
 ### `<%`: Scriptlets
 
-Scriptlets in the `<%` tag allows logic to be embedded in an EJS template. You
-are free to use *any* JavaScript syntax in this tag, and to mix JavaScript
-with EJS. You can also put multiple statements in one tag.
+* allows
+  * 👀embedding logic | EJS template 👀
+    * ALLOWED logic
+      * ANY JavaScript syntax
+      * mix JavaScript -- with -- EJS
+      * MULTIPLE statements
 
 #### Comments
 
-All types of JavaScript comments are allowed, although it is preferable to use
-the `<%#` tag for comments. For example, the following three code blocks are
-equivalent, though `<%#` is the shortest.
+* == ALL types of JS comments are allowed
+* recommendations
+  * use `<%#`
 
-```ejs
-<%# comment %>
-<%/* comment */%>
-<%// comment %>
-```
+* _Example:_ EQUIVALENT comments
+  ```ejs
+  <%# comment %>
+  <%/* comment */%>
+  <%// comment %>
+  ```
 
 #### Curly brackets
 
-Always use brackets in loops and conditionals that involves mixing EJS
-template and JavaScript scriptlets. Omitting brackets might work for some
-statements, but the behavior is undefined and subject to change.
+* uses
+  * loops
+  * conditionals
+* allows
+  * mixing EJS template + JavaScript scriptlets 
+* if you omit brackets -> MIGHT work | SOME statements
+  * BUT behavior
+    * undefined
+    * subject to change
 
-It is not necessary to use curly brackets for scriptlet-only code.
-
+##### _Example:_ 
+* TODO: How to create the example?
 ```ejs
 <%# Bad practice %>
 <% if (true) %>
@@ -215,20 +204,20 @@ It is not necessary to use curly brackets for scriptlet-only code.
 <% } %>
 ```
 
-#### Line breaks inside a tag
+#### Line breaks | tag
 
-Line breaks are allowed in `<%` tags.
+* recommendations
+  * put COMPLETE statements | tag
+* use case
+  * mixing EJS + JavaScript scriptlet
 
-Unless the statement involves mixing EJS and JavaScript scriptlet, always put
-complete statements in a tag. For example, the following works:
-
+##### _Example:_
+* TODO: How to create the example?
 ```ejs
 <% var stringToShow = thisIsABooleanVariableWithAVeryLongName
                     ? 'OK'
                     : 'not OK' %>
 ```
-
-While the following does not:
 
 ```ejs
 <% var stringToShow = thisIsABooleanVariableWithAVeryLongName %>
@@ -238,21 +227,21 @@ While the following does not:
 
 #### Semicolons
 
-As is in JavaScript, semicolons are not required if proper line breaks are
-preserved.
+* use cases
+  * ❌NO proper line breaks are preserved❌
+##### _Example:_
+* TODO: How to create the example?
 
-#### Whitespace
+#### Useless Whitespace
 
-The use of scriptlets might cause some useless whitespace, as illustrated by
-the example below. You can trim it by
-
-1. using the `-%>` ending tag, and
-2. using the `<%_` starting tag or starting the tag in the beginning of a line.
+* Reason: 🧠use scriptlets 🧠
+* ways to trim it
+  1. use `-%>`
+  2. use `<%_` OR start the tag | BEGINNING line
 
 #### Example
-
-In the following example, several different coding styles are used
-simultaneously, to show that EJS is flexible with regards to personal habits.
+* TODO: How to create the example?
+In the following example, several different coding styles are used simultaneously, to show that EJS is flexible with regards to personal habits.
 It does *not* mean that we recommend mixing coding styles in your own project.
 
 ##### EJS
@@ -572,21 +561,3 @@ This has the exact same effect as the example for the `include` directive.
   <li>Catcher</li>
 </ul>
 ```
-
-## Copyright
-
-This document is under the following license:
-
-Copyright © 2015 Tiancheng “Timothy” Gu
-
-Licensed under the Apache License, Version 2.0 (the “License”); you may not
-use this file except in compliance with the License. You may obtain a copy of
-the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an “AS IS” BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations under
-the License.
